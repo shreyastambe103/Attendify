@@ -2,4 +2,7 @@ This is a Java Based Attendance System developed to demonstrate the use of Java 
 Follow the steps to run the program on your pc
 1. Clone the repository
 2. Create the Data Base in MySQL using the MySQL WorkBench Script Attached (attendify.sql)
-3. Go to src/
+3. Go to src/main/java
+4. Change the JDBC connector arguements as per your database name , username and password in all files
+5. Run the SignInGUI.java
+
