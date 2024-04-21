@@ -6,3 +6,47 @@ Follow the steps to run the program on your pc
 4. Change the JDBC connector arguements as per your database name , username and password in all files
 5. Run the SignInGUI.java
 
+# Attendify
+
+## Introduction
+Attendify is an attendance management system designed to streamline the process of marking and tracking attendance for educational institutions. This system provides separate interfaces for students and teachers, allowing for efficient attendance recording and reporting.
+
+## Features
+- *User Authentication:* Secure login and registration system for students and teachers.
+- *Student Dashboard:* Students can view their attendance records and receive notifications.
+- *Teacher Dashboard:* Teachers can mark attendance and generate attendance reports.
+- *Real-time Updates:* Attendance data is updated in real-time and accessible through the dashboard.
+
+## Technologies Used
+- Java (GUIs)
+- SQL (Database management)
+
+## Installation
+To set up Attendify on your local machine, follow these steps:
+
+1. Clone the repository:
+   bash
+   git clone https://github.com/yourusername/Attendify.git
+   
+2. Navigate to the project directory:
+   bash
+   cd Attendify
+   
+3. Run the SQL script to set up the database:
+   sql
+   source path/to/attendify.sql
+   
+4. Compile and run the Java files:
+   java
+   javac *.java
+   java Main
+   
+
+## Usage
+To use Attendify, start the application and log in using your student or teacher credentials. Navigate through the dashboard to mark or view attendance.
+
+## Contributing
+We welcome contributions to Attendify. If you have suggestions or improvements, please fork the repository and submit a pull request.
+
+## License
+This project is licensed under the MIT License - see the LICENSE.md file for details.
