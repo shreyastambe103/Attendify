@@ -132,7 +132,7 @@ public class SignUpGUI extends JFrame {
         button.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
-                button.setBackground(new Color(251, 124, 100)); // #fb7c64
+                button.setBackground(new Color(150, 111, 4)); // #fb7c64
             }
 
             @Override

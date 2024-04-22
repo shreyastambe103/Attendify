@@ -56,6 +56,12 @@ public class TeacherDashboardGUI extends JFrame {
         sidebarContent.add(markAttendanceButton);
         sidebarContent.add(Box.createRigidArea(new Dimension(0, 10)));
 
+        // View Attendance button
+        JButton viewAttendanceButton = createSidebarButton("View Attendance");
+        viewAttendanceButton.addActionListener(e -> viewAttendance());
+        sidebarContent.add(viewAttendanceButton);
+        sidebarContent.add(Box.createRigidArea(new Dimension(0, 10)));
+
         // Logout button
         JButton logoutButton = createSidebarButton("Logout");
         logoutButton.addActionListener(e -> logout());
@@ -84,6 +90,7 @@ public class TeacherDashboardGUI extends JFrame {
         add(mainPanel);
     }
 
+
     private JButton createSidebarButton(String text) {
         JButton button = new JButton(text);
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -108,6 +115,7 @@ public class TeacherDashboardGUI extends JFrame {
         return button;
     }
 
+
     private void handleMenuItem(String menuItem) {
         // Handle menu item click events
         JOptionPane.showMessageDialog(null, "You clicked: " + menuItem);
@@ -125,6 +133,11 @@ public class TeacherDashboardGUI extends JFrame {
         //open mark attendance page
         new MarkAttendanceGUI();
     }
+    private void viewAttendance() {
+        // Close current window
+        dispose();
+        // Open the ViewAttendanceGUI
+        new ViewAttendanceGUI();}
     public static void main(String[] args) {
         SwingUtilities.invokeLater(TeacherDashboardGUI::new);
     }

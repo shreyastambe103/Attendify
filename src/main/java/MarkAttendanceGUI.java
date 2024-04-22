@@ -54,7 +54,7 @@ public class MarkAttendanceGUI extends JFrame {
         optionsPanel.add(classLabel);
 
         classComboBox = new JComboBox<>();
-        classComboBox.setBackground(Color.orange);
+        classComboBox.setBackground(Color.WHITE);
         loadClasses();
         classComboBox.setFont(new Font("Arial", Font.PLAIN, 20)); // Increased font size
         optionsPanel.add(classComboBox);
@@ -118,7 +118,7 @@ public class MarkAttendanceGUI extends JFrame {
         buttonPanel.add(goBackButton);
 
         submitButton = new JButton("Submit");
-        submitButton.setBackground(new Color(0, 128, 0)); // Green color
+        submitButton.setBackground(new Color(0, 176, 0)); // Green color
         submitButton.setForeground(Color.black);
         submitButton.setFont(new Font("Arial", Font.PLAIN, 20)); // Increased font size
         submitButton.addActionListener(e -> submitAttendance());
