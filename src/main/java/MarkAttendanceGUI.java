@@ -36,7 +36,7 @@ public class MarkAttendanceGUI extends JFrame {
         headerPanel.setBackground(new Color(15, 15, 15));
         headerPanel.setPreferredSize(new Dimension(getWidth(), 60));
 
-
+        // Title label for the header
         JLabel titleLabel = new JLabel("Mark Attendance");
         titleLabel.setForeground(Color.WHITE);
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -45,9 +45,11 @@ public class MarkAttendanceGUI extends JFrame {
 
         mainPanel.add(headerPanel, BorderLayout.NORTH);
 
+        // Panel to hold class and subject selection options
         JPanel optionsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         optionsPanel.setBackground(new Color(33, 33, 33));
 
+        // Label and combo box for selecting class
         JLabel classLabel = new JLabel("Select Class:");
         classLabel.setForeground(Color.WHITE);
         classLabel.setFont(new Font("Arial", Font.PLAIN, 20)); // Increased font size
@@ -59,6 +61,7 @@ public class MarkAttendanceGUI extends JFrame {
         classComboBox.setFont(new Font("Arial", Font.PLAIN, 20)); // Increased font size
         optionsPanel.add(classComboBox);
 
+        // Label and combo box for selecting subject
         JLabel subjectLabel = new JLabel("Select Subject:");
         subjectLabel.setForeground(Color.WHITE);
         subjectLabel.setFont(new Font("Arial", Font.PLAIN, 20)); // Increased font size
@@ -69,6 +72,7 @@ public class MarkAttendanceGUI extends JFrame {
         subjectComboBox.setFont(new Font("Arial", Font.PLAIN, 20)); // Increased font size
         optionsPanel.add(subjectComboBox);
 
+        // Button to initiate marking attendance
         JButton markAttendanceButton = new JButton("Mark Attendance");
         markAttendanceButton.setBackground(new Color(212, 162, 15)); // #d4a20f
         markAttendanceButton.addActionListener(e -> startMarkingAttendance());
@@ -77,10 +81,12 @@ public class MarkAttendanceGUI extends JFrame {
 
         mainPanel.add(optionsPanel, BorderLayout.NORTH);
 
+        // Panel to hold the table for displaying students and attendance marking buttons
         JScrollPane scrollPane = new JScrollPane();
         JPanel contentPanel = new JPanel(new BorderLayout());
         contentPanel.setBackground(new Color(33, 33, 33));
 
+        // Table model and rendering
         tableModel = new DefaultTableModel(new String[]{"Student ID", "Name", "Present"}, 0);
         studentTable = new JTable(tableModel) {
             @Override
@@ -98,6 +104,7 @@ public class MarkAttendanceGUI extends JFrame {
         studentTable.getColumnModel().getColumn(1).setPreferredWidth(350); // Increased column width
         studentTable.getColumnModel().getColumn(2).setPreferredWidth(150); // Increased column width
 
+        // Table header rendering
         JTableHeader tableHeader = studentTable.getTableHeader();
         tableHeader.setFont(studentTable.getFont());
         scrollPane.setViewportView(studentTable);
@@ -105,11 +112,11 @@ public class MarkAttendanceGUI extends JFrame {
 
         mainPanel.add(contentPanel, BorderLayout.CENTER);
 
+        // Panel to hold the submit and go back buttons
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         buttonPanel.setBackground(new Color(33, 33, 33));
 
-
-
+        // Go back button
         goBackButton = new JButton("Go Back");
         goBackButton.setBackground(new Color(128, 128, 128)); // Gray color
         goBackButton.setForeground(Color.BLACK);
@@ -117,6 +124,7 @@ public class MarkAttendanceGUI extends JFrame {
         goBackButton.addActionListener(e -> goBack());
         buttonPanel.add(goBackButton);
 
+        // Submit button
         submitButton = new JButton("Submit");
         submitButton.setBackground(new Color(0, 176, 0)); // Green color
         submitButton.setForeground(Color.black);
@@ -129,6 +137,7 @@ public class MarkAttendanceGUI extends JFrame {
         add(mainPanel);
     }
 
+    // Load classes from the database into the class combo box
     private void loadClasses() {
         try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/attendify", "root", "Bazinga103");
              Statement stmt = conn.createStatement();
@@ -141,6 +150,7 @@ public class MarkAttendanceGUI extends JFrame {
         }
     }
 
+    // Load subjects from the database into the subject combo box
     private void loadSubjects() {
         try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/attendify", "root", "Bazinga103");
              Statement stmt = conn.createStatement();
@@ -153,6 +163,7 @@ public class MarkAttendanceGUI extends JFrame {
         }
     }
 
+    // Initiate the process of marking attendance
     private void startMarkingAttendance() {
         String selectedClass = classComboBox.getSelectedItem() != null ? classComboBox.getSelectedItem().toString() : "";
         String selectedSubject = subjectComboBox.getSelectedItem() != null ? subjectComboBox.getSelectedItem().toString() : "";
@@ -175,6 +186,7 @@ public class MarkAttendanceGUI extends JFrame {
         }
     }
 
+    // Retrieve students for the selected class and subject from the database
     private List<Student> getStudents(String selectedClass, String selectedSubject) {
         List<Student> students = new ArrayList<>();
         Connection conn = null;
@@ -219,6 +231,7 @@ public class MarkAttendanceGUI extends JFrame {
         return students;
     }
 
+    // Submit the attendance records to the database
     private void submitAttendance() {
         int option = JOptionPane.showConfirmDialog(this, "Are you sure you want to submit the attendance?", "Confirm Submission", JOptionPane.YES_NO_OPTION);
         if (option == JOptionPane.YES_OPTION) {
@@ -274,14 +287,14 @@ public class MarkAttendanceGUI extends JFrame {
         }
     }
 
-
+    // Method to go back to the teacher dashboard
     private void goBack() {
-        // Add code to go back to teacherDashboard
-        // For example:
         dispose(); // Close current window
         TeacherDashboardGUI teacherDashboardGUI = new TeacherDashboardGUI();
         teacherDashboardGUI.setVisible(true);
     }
+
+    // Inner class representing a Student
     static class Student {
         private int id;
         private String name;
@@ -300,7 +313,7 @@ public class MarkAttendanceGUI extends JFrame {
         }
     }
 
-
+    // Main method to start the GUI
     public static void main(String[] args) {
         SwingUtilities.invokeLater(MarkAttendanceGUI::new);
     }
