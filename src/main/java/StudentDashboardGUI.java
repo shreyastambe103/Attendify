@@ -46,7 +46,7 @@ public class StudentDashboardGUI extends JFrame {
         sidebarContent.add(Box.createRigidArea(new Dimension(0, 10)));
 
         JButton viewAttendanceButton = createSidebarButton("View Attendance");
-        viewAttendanceButton.addActionListener(e -> openViewAttendanceGUI());
+        viewAttendanceButton.addActionListener(e -> StudentViewAttendance());
         sidebarContent.add(viewAttendanceButton);
         sidebarContent.add(Box.createRigidArea(new Dimension(0, 10)));
 
@@ -108,9 +108,9 @@ public class StudentDashboardGUI extends JFrame {
         new SignInGUI();
     }
 
-    private void openViewAttendanceGUI() {
+    private void StudentViewAttendance() {
         dispose();
-        new ViewAttendanceGUI();
+        new StudentViewAttendance();
     }
 
     public static void main(String[] args) {

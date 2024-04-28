@@ -134,7 +134,13 @@ public class SignInGUI extends JFrame {
                 switch (role) {
                     case "admin":
                     case "teacher":
-                        new TeacherDashboardGUI(); // Open Teacher Dashboard
+                        // Retrieve the TeacherID if the user is a teacher
+                        long teacherID = getLoggedInTeacherID(username);
+                        if (teacherID != -1) {
+                            new TeacherDashboardGUI();
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Teacher ID not found.");
+                        }
                         break;
                     case "student":
                         new StudentDashboardGUI(); //Open Student Dashboard
@@ -156,6 +162,32 @@ public class SignInGUI extends JFrame {
             ex.printStackTrace();
             JOptionPane.showMessageDialog(null, "An error occurred while attempting to login.");
         }
+    }
+    private long getLoggedInTeacherID(String username) {
+        long teacherID = -1; // Default value in case no teacher is found
+
+        try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/attendify", "root", "Bazinga103")) {
+            // Prepare SQL statement to select TeacherID based on the provided username
+            String query = "SELECT TeacherID FROM teacher WHERE UserID = (SELECT UserID FROM user WHERE Name = ?)";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, username);
+
+            // Execute query
+            ResultSet resultSet = statement.executeQuery();
+
+            // Check if a teacher with the provided username exists
+            if (resultSet.next()) {
+                teacherID = resultSet.getLong("TeacherID");
+            }
+
+            // Close resources
+            resultSet.close();
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return teacherID;
     }
 
     private JButton createHoverButton(String text) {

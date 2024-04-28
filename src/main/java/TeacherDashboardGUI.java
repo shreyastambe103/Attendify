@@ -2,10 +2,12 @@ import javax.swing.*;
 import java.awt.*;
 
 public class TeacherDashboardGUI extends JFrame {
+    private long teacherID;
     public TeacherDashboardGUI() {
         super("Teacher Dashboard");
+        //this.teacherID = teacherID;
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(1280, 800);
+        setSize(1440, 900);
         setLocationRelativeTo(null);
 
         // Initialize components
@@ -136,8 +138,8 @@ public class TeacherDashboardGUI extends JFrame {
     private void viewAttendance() {
         // Close current window
         dispose();
-        // Open the ViewAttendanceGUI
-        new ViewAttendanceGUI();}
+        // Open the TeacherViewAttendance
+        new TeacherViewAttendance();}
     public static void main(String[] args) {
         SwingUtilities.invokeLater(TeacherDashboardGUI::new);
     }

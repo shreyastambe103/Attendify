@@ -4,18 +4,18 @@ import javax.swing.table.JTableHeader;
 import java.awt.*;
 import java.sql.*;
 
-public class ViewAttendanceGUI extends JFrame {
+public class TeacherViewAttendance extends JFrame {
 
-    private JComboBox<Integer> studentIDComboBox;
+    private JComboBox<Long> studentIDComboBox;
     private JComboBox<String> dateComboBox;
     private DefaultTableModel tableModel;
     private JTable attendanceTable;
     private JButton goBackButton;
 
-    public ViewAttendanceGUI() {
+    public TeacherViewAttendance() {
         super("View Attendance");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(800, 600);
+        setSize(1440, 900);
         setLocationRelativeTo(null);
 
         initComponents();
@@ -99,7 +99,7 @@ public class ViewAttendanceGUI extends JFrame {
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 ResultSet resultSet = preparedStatement.executeQuery();
                 while (resultSet.next()) {
-                    int studentID = resultSet.getInt("StudentID");
+                    long studentID = resultSet.getLong("StudentID");
                     studentIDComboBox.addItem(studentID);
                 }
             }
@@ -126,7 +126,7 @@ public class ViewAttendanceGUI extends JFrame {
     }
 
     private void fetchAttendance() {
-        int selectedStudentID = (int) studentIDComboBox.getSelectedItem();
+        long selectedStudentID = (long) studentIDComboBox.getSelectedItem();
         String selectedDate = (String) dateComboBox.getSelectedItem();
 
         try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/attendify", "root", "Bazinga103")) {
@@ -139,11 +139,11 @@ public class ViewAttendanceGUI extends JFrame {
                     "WHERE a.Date = ? AND s.StudentID = ?";
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 preparedStatement.setString(1, selectedDate);
-                preparedStatement.setInt(2, selectedStudentID);
+                preparedStatement.setLong(2, selectedStudentID);
                 ResultSet resultSet = preparedStatement.executeQuery();
                 tableModel.setRowCount(0);
                 while (resultSet.next()) {
-                    int studentID = resultSet.getInt("StudentID");
+                    long studentID = resultSet.getLong("StudentID");
                     String name = resultSet.getString("Name");
                     String date = resultSet.getString("Date");
                     String subject = resultSet.getString("Subject_name");
@@ -162,6 +162,6 @@ public class ViewAttendanceGUI extends JFrame {
         // Close the current ViewAttendanceGUI instance
         dispose();
         // Open a new StudentDashboardGUI instance
-        new StudentDashboardGUI();
+        new TeacherDashboardGUI();
     }
 }
