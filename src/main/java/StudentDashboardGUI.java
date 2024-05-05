@@ -1,7 +1,13 @@
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.*;
 
 public class StudentDashboardGUI extends JFrame {
+
+    private JTextField studentIDField;
 
     public StudentDashboardGUI() {
         super("Student Dashboard");
@@ -64,15 +70,71 @@ public class StudentDashboardGUI extends JFrame {
         JPanel studentDashboardContent = new JPanel();
         studentDashboardContent.setBackground(new Color(33, 33, 33)); // #212121
         studentDashboardContent.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-        JLabel dashboardLabel = new JLabel("Student Dashboard Content");
+        JLabel dashboardLabel = new JLabel("Enter Student ID");
         dashboardLabel.setFont(new Font("Arial", Font.BOLD, 20));
         dashboardLabel.setForeground(Color.WHITE);
         studentDashboardContent.add(dashboardLabel);
+
+        studentIDField = new JTextField(10);
+        studentDashboardContent.add(studentIDField);
+
+        JButton seeStatsButton = createSidebarButton("See Stats");
+        seeStatsButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                seeStatsButtonClicked();
+            }
+        });
+        studentDashboardContent.add(seeStatsButton);
 
         mainContentPanel.add(studentDashboardContent, BorderLayout.CENTER);
         mainPanel.add(mainContentPanel, BorderLayout.CENTER);
 
         add(mainPanel);
+    }
+
+    private void seeStatsButtonClicked() {
+        String studentID = studentIDField.getText();
+
+        // JDBC Connection
+        try {
+            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/attendify", "root", "Bazinga103");
+            CallableStatement stmt = conn.prepareCall("{ call CalculateAttendanceStats(?) }");
+            stmt.setString(1, studentID);
+            ResultSet rs = stmt.executeQuery();
+
+            // Create table model
+            ResultSetMetaData metaData = rs.getMetaData();
+            int columnCount = metaData.getColumnCount();
+            String[] columnNames = new String[columnCount];
+            for (int i = 0; i < columnCount; i++) {
+                columnNames[i] = metaData.getColumnLabel(i + 1);
+            }
+
+            DefaultTableModel model = new DefaultTableModel();
+            model.setColumnIdentifiers(columnNames);
+
+            // Populate table model
+            while (rs.next()) {
+                Object[] rowData = new Object[columnCount];
+                for (int i = 0; i < columnCount; i++) {
+                    rowData[i] = rs.getObject(i + 1);
+                }
+                model.addRow(rowData);
+            }
+
+            // Create JTable
+            JTable table = new JTable(model);
+            JScrollPane scrollPane = new JScrollPane(table);
+            JOptionPane.showMessageDialog(this, scrollPane, "Attendance Stats for Student ID: " + studentID, JOptionPane.INFORMATION_MESSAGE);
+
+            rs.close();
+            stmt.close();
+            conn.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error fetching data from database", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     private JButton createSidebarButton(String text) {

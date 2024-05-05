@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class MarkAttendanceGUI extends JFrame {
 
@@ -23,7 +24,7 @@ public class MarkAttendanceGUI extends JFrame {
     public MarkAttendanceGUI() {
         super("Mark Attendance");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(1280, 800);
+        setSize(1440, 900);
         setLocationRelativeTo(null);
 
         initComponents();
@@ -255,7 +256,7 @@ public class MarkAttendanceGUI extends JFrame {
                 return; // Exit method if date format is invalid
             }
 
-            long subjectID = Long.parseLong(subjectComboBox.getSelectedItem().toString().split(" - ")[0]);
+            long subjectID = Long.parseLong(Objects.requireNonNull(Objects.requireNonNull(subjectComboBox.getSelectedItem())).toString().split(" - ")[0]);
             String subjectName = "";
 
             try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/attendify", "root", "Bazinga103");

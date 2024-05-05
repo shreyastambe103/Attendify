@@ -6,17 +6,21 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class SignUpGUI extends JFrame {
-    private JTextField adminIDField;
+    private JPasswordField adminIDField;
     private JComboBox<String> accountTypeComboBox;
     private JTextField nameField;
-    private JTextField prnField;
+    private JTextField studentIDField;
+    private JTextField classField; // Added class field
+    private JTextField subjectField; // Added subject field
+    private JTextField emailField; // Added email field
+    private JTextField phoneField; // Added phone number field
     private JPasswordField passwordField;
     private JPasswordField confirmPasswordField;
 
     public SignUpGUI() {
         super("Sign Up");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(500, 400);
+        setSize(500, 600);
         setLocationRelativeTo(null);
 
         // Initialize components
@@ -37,15 +41,17 @@ public class SignUpGUI extends JFrame {
         titleLabel.setForeground(Color.WHITE);
         mainPanel.add(titleLabel, BorderLayout.NORTH);
 
-        JPanel formPanel = new JPanel(new GridLayout(6, 2, 10, 10));
+        JPanel formPanel = new JPanel(new GridLayout(10, 2, 10, 10)); // Increased rows to accommodate new fields
         formPanel.setBackground(new Color(61, 61, 61)); // Slightly lighter shade of the background
         formPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
+
         JLabel adminIDLabel = new JLabel("Admin ID:");
         adminIDLabel.setForeground(Color.WHITE);
-        adminIDField = new JTextField();
+        adminIDField = new JPasswordField();
         formPanel.add(adminIDLabel);
         formPanel.add(adminIDField);
+
 
         JLabel accountTypeLabel = new JLabel("Account Type:");
         accountTypeLabel.setForeground(Color.WHITE);
@@ -54,17 +60,41 @@ public class SignUpGUI extends JFrame {
         formPanel.add(accountTypeLabel);
         formPanel.add(accountTypeComboBox);
 
+        JLabel emailLabel = new JLabel("Email:");
+        emailLabel.setForeground(Color.WHITE);
+        emailField = new JTextField();
+        formPanel.add(emailLabel);
+        formPanel.add(emailField);
+
+        JLabel phoneLabel = new JLabel("Phone No.:");
+        phoneLabel.setForeground(Color.WHITE);
+        phoneField = new JTextField();
+        formPanel.add(phoneLabel);
+        formPanel.add(phoneField);
+
         JLabel nameLabel = new JLabel("Name:");
         nameLabel.setForeground(Color.WHITE);
         nameField = new JTextField();
         formPanel.add(nameLabel);
         formPanel.add(nameField);
 
-        JLabel prnLabel = new JLabel("PRN:");
-        prnLabel.setForeground(Color.WHITE);
-        prnField = new JTextField();
-        formPanel.add(prnLabel);
-        formPanel.add(prnField);
+        JLabel studentIDLabel = new JLabel("Student ID:");
+        studentIDLabel.setForeground(Color.WHITE);
+        studentIDField = new JTextField();
+        formPanel.add(studentIDLabel);
+        formPanel.add(studentIDField);
+
+        JLabel classLabel = new JLabel("Class:"); // Added class label
+        classLabel.setForeground(Color.WHITE);
+        classField = new JTextField();
+        formPanel.add(classLabel);
+        formPanel.add(classField);
+
+        JLabel subjectLabel = new JLabel("Subject:"); // Added subject label
+        subjectLabel.setForeground(Color.WHITE);
+        subjectField = new JTextField();
+        formPanel.add(subjectLabel);
+        formPanel.add(subjectField);
 
         JLabel passwordLabel = new JLabel("Password:");
         passwordLabel.setForeground(Color.WHITE);
@@ -100,7 +130,7 @@ public class SignUpGUI extends JFrame {
         });
 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        buttonPanel.setBackground(new Color(33, 33, 33)); // #212121
+        buttonPanel.setBackground(new Color(0,0,0));
         buttonPanel.add(signUpButton);
         buttonPanel.add(backButton); // Add the back button
         mainPanel.add(buttonPanel, BorderLayout.SOUTH);
@@ -111,14 +141,41 @@ public class SignUpGUI extends JFrame {
     private void signUp() {
         String adminID = adminIDField.getText();
         String accountType = (String) accountTypeComboBox.getSelectedItem();
+        String email = emailField.getText();
+        String phone = phoneField.getText();
         String name = nameField.getText();
-        String prn = prnField.getText();
+        String studentID = studentIDField.getText();
+        String className = classField.getText();
+        String subject = subjectField.getText();
         String password = new String(passwordField.getPassword());
         String confirmPassword = new String(confirmPasswordField.getPassword());
 
-        // Perform validation and sign-up process here
-        // You can implement this according to your requirement
+        // Perform validation
+        // Validate all fields are filled
+        if (adminID.isEmpty() || phone.isEmpty() || password.isEmpty() || name.isEmpty() || email.isEmpty() || accountType.equals("Select Account Type")) {
+            // Show error message to the user
+            JOptionPane.showMessageDialog(this, "Please fill in all fields.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        if(!(adminID.equals("admin123"))){
+            JOptionPane.showMessageDialog(this, "Incorrect Admin ID.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        // Validate password and confirm password match
+        if (!password.equals(confirmPassword)) {
+            // Show error message to the user
+            JOptionPane.showMessageDialog(this, "Passwords do not match.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Call the database manager to sign up the user
+        DatabaseManager.signUpUser(phone, password, name, email, accountType, studentID, className, subject);
+
+        // Optionally, show success message or navigate to another screen
+        JOptionPane.showMessageDialog(this, "Sign up successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
+        // You can navigate to another screen or close the current window here
     }
+
 
     private JButton createHoverButton(String text) {
         JButton button = new JButton(text);

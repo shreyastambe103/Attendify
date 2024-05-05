@@ -9,8 +9,6 @@ public class TeacherViewAttendance extends JFrame {
     private JComboBox<Long> studentIDComboBox;
     private JComboBox<String> dateComboBox;
     private DefaultTableModel tableModel;
-    private JTable attendanceTable;
-    private JButton goBackButton;
 
     public TeacherViewAttendance() {
         super("View Attendance");
@@ -65,7 +63,7 @@ public class TeacherViewAttendance extends JFrame {
         tablePanel.setBackground(new Color(33, 33, 33));
 
         tableModel = new DefaultTableModel(new String[]{"Student ID", "Name", "Date", "Subject", "Status"}, 0);
-        attendanceTable = new JTable(tableModel);
+        JTable attendanceTable = new JTable(tableModel);
         attendanceTable.setFont(new Font("Arial", Font.PLAIN, 20));
         attendanceTable.setRowHeight(30);
 
@@ -79,7 +77,7 @@ public class TeacherViewAttendance extends JFrame {
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         buttonPanel.setBackground(new Color(33, 33, 33));
 
-        goBackButton = new JButton("Go Back");
+        JButton goBackButton = new JButton("Go Back");
         goBackButton.setBackground(new Color(128, 128, 128));
         goBackButton.setForeground(Color.BLACK);
         goBackButton.setFont(new Font("Arial", Font.PLAIN, 20));

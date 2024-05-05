@@ -2,7 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class TeacherDashboardGUI extends JFrame {
-    private long teacherID;
+    //private long teacherID;
     public TeacherDashboardGUI() {
         super("Teacher Dashboard");
         //this.teacherID = teacherID;
